@@ -39,7 +39,8 @@ static const char os_launch_hook[] = {
 	0x05, 0x0b, 0xcf, 0xfc, 0x05, 0x05, 0x99, 0x70, 0x05, 0x05, 0x99, 0x7e,
 };
 
-static const char sd_path[] = "/vol/sdcard";
+//static const char sd_path[] = "/vol/sdcard";
+static const char sd_path[] = "/vol/storage_mlc01/FW/";
 
 static unsigned int __attribute__((noinline)) disable_mmu(void)
 {
@@ -90,7 +91,7 @@ int _main()
 
 	int i;
 	for (i = 0; i < 32; i++)
-		if (i < 11)
+		if (i < sizeof(sd_path))
 			((char*)(0x050663B4 - 0x05000000 + 0x081C0000))[i] = sd_path[i];
 		else
 			((char*)(0x050663B4 - 0x05000000 + 0x081C0000))[i] = (char)0;
