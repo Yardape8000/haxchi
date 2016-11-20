@@ -1,5 +1,11 @@
 .PHONY := all code550.bin
 
+ifeq ($(Windows_NT), 1)
+	ZIP = zip/zip.exe
+else
+	ZIP = zip
+endif
+
 all: brainage kirby yoshids brainage.zip kirby.zip yoshids.zip brainage_cfw.zip kirby_cfw.zip yoshids_cfw.zip
 
 brainage: setup_brainage brainage.nds setup_brainage_cfw brainage_cfw.nds
@@ -52,6 +58,7 @@ yoshids.nds:
 	armips haxchi_rop.s
 	armips haxchi.s
 	mv rom.nds yoshids.nds
+	cp yoshids.nds wwtouched.nds
 
 brainage_cfw.nds:
 	armips haxchi_rop.s
@@ -67,28 +74,31 @@ yoshids_cfw.nds:
 	armips haxchi_rop.s
 	armips haxchi.s
 	mv rom.nds yoshids_cfw.nds
+	cp yoshids_cfw.nds wwtouched_cfw.nds
 
 brainage.zip:
-	zip -JXjq9 brainage.zip brainage.nds
+	$(ZIP) -JXjq9 brainage.zip brainage.nds
 
 kirby.zip:
-	zip -JXjq9 kirby.zip kirby.nds
+	$(ZIP) -JXjq9 kirby.zip kirby.nds
 
 yoshids.zip:
-	zip -JXjq9 yoshids.zip yoshids.nds
+	$(ZIP) -JXjq9 yoshids.zip yoshids.nds
+	$(ZIP) -JXjq9 wwtouched.zip wwtouched.nds
 
 brainage_cfw.zip:
-	zip -JXjq9 brainage_cfw.zip brainage_cfw.nds
+	$(ZIP) -JXjq9 brainage_cfw.zip brainage_cfw.nds
 
 kirby_cfw.zip:
-	zip -JXjq9 kirby_cfw.zip kirby_cfw.nds
+	$(ZIP) -JXjq9 kirby_cfw.zip kirby_cfw.nds
 
 yoshids_cfw.zip:
-	zip -JXjq9 yoshids_cfw.zip yoshids_cfw.nds
+	$(ZIP) -JXjq9 yoshids_cfw.zip yoshids_cfw.nds
+	$(ZIP) -JXjq9 wwtouched_cfw.zip wwtouched_cfw.nds
 
 clean:
-	@rm -f *.bin defines.s brainage.nds brainage.zip kirby.nds kirby.zip yoshids.nds yoshids.zip
-	@rm -f brainage_cfw.nds brainage_cfw.zip kirby_cfw.nds kirby_cfw.zip yoshids_cfw.nds yoshids_cfw.zip
+	@rm -f *.bin defines.s brainage.nds brainage.zip kirby.nds kirby.zip wwtouched.nds wwtouched.zip yoshids.nds yoshids.zip
+	@rm -f brainage_cfw.nds brainage_cfw.zip kirby_cfw.nds kirby_cfw.zip wwtouched_cfw.nds wwtouched_cfw.zip  yoshids_cfw.nds yoshids_cfw.zip
 	@cd cfw_booter && make clean && cd ..
 	@cd hbl_loader && make clean && cd ..
 	@echo "all cleaned up !"
